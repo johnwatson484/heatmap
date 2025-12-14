@@ -1,2 +1,2 @@
-{{- define "hapi-template-ts.container" -}}
+{{- define "heatmap.container" -}}
 {{- end -}}

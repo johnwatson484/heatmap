@@ -1,5 +1,5 @@
 services:
-  hapi-template-ts:
+  heatmap:
     command: npm run test:watch
     volumes:
       - ./.git:/home/node/.git

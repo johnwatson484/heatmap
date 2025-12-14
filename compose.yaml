@@ -1,5 +1,5 @@
 services:
-  hapi-template-ts:
+  heatmap:
     build: .
-    image: hapi-template-ts
-    container_name: hapi-template-ts
+    image: heatmap
+    container_name: heatmap

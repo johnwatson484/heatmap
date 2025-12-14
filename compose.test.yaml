@@ -1,9 +1,9 @@
 services:
-  hapi-template-ts:
+  heatmap:
     build:
       target: development
-    image: hapi-template-ts-test
-    container_name: hapi-template-ts-test
+    image: heatmap-test
+    container_name: heatmap-test
     command: npm run test
     volumes:
       - ./test:/home/node/test

@@ -1,5 +1,5 @@
-# Hapi Template (TypeScript)
-Quick start new Node.js project using Hapi.js and TypeScript.
+# Heatmap
+Heatmap for Strava activities.
 
 ## Prerequisites
 
@@ -8,7 +8,7 @@ Either:
 - Docker Compose
 
 Or:
-- Node 22+
+- Node 24+
 
 ## Running application
 ### Docker
