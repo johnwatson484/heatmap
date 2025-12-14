@@ -2,10 +2,24 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 import nunjucks, { Template } from 'nunjucks'
 import Vision from '@hapi/vision'
-import { ServerRegisterPluginObject, Request } from '@hapi/hapi'
+import { ServerRegisterPluginObject, Request, ResponseObject } from '@hapi/hapi'
 import config from '../config.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
+
+interface ViewContext {
+  assetPath?: string
+  appName?: string
+  auth?: any
+  [key: string]: any
+}
+
+function getResponseContext (response: ResponseObject): Record<string, any> {
+  if (response.source && typeof response.source === 'object' && 'context' in response.source) {
+    return (response.source.context as Record<string, any>) || {}
+  }
+  return {}
+}
 
 const plugin: ServerRegisterPluginObject<any> = {
   plugin: Vision,
@@ -32,8 +46,9 @@ const plugin: ServerRegisterPluginObject<any> = {
     path: '../../src/views',
     relativeTo: __dirname,
     isCached: !config.get('isDev'),
-    context: async (request: Request) => {
-      const context = request.response.source?.context || {}
+    context: async (request: Request): Promise<ViewContext> => {
+      const response = request.response as ResponseObject
+      const context: ViewContext = getResponseContext(response)
 
       context.assetPath = '/assets'
       context.appName = config.get('appName')
@@ -49,8 +64,8 @@ const plugin: ServerRegisterPluginObject<any> = {
           auth
         }
       } catch (error) {
-        // If cache lookup fails, return context without auth to prevent circular errors
-        request.log(['warn', 'views'], `Failed to get auth from cache: ${error.message}`)
+        const errorMessage = error instanceof Error ? error.message : String(error)
+        request.log(['warn', 'views'], `Failed to get auth from cache: ${errorMessage}`)
         return context
       }
     }

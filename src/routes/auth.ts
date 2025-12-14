@@ -21,7 +21,7 @@ const routes: ServerRoute[] = [{
       return h.view('unauthorised')
     }
 
-    const { profile, token, refreshToken } = request.auth.credentials
+    const { profile, token, refreshToken } = request.auth.credentials as any
 
     await request.server.app.cache.set(profile.sessionId, {
       isAuthenticated: true,

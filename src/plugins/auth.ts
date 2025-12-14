@@ -1,9 +1,10 @@
+import { Request, ServerRegisterPluginObject } from '@hapi/hapi'
 import Jwt from '@hapi/jwt'
 import { refreshTokens } from '../auth/refresh-tokens.js'
 import { getSafeRedirect } from '../utils/get-safe-redirect.js'
 import config from '../config.js'
 
-export default {
+const plugin: ServerRegisterPluginObject<any> = {
   plugin: {
     name: 'auth',
     register: async (server) => {
@@ -23,7 +24,7 @@ function getBellOptions () {
       auth: config.get('strava.authorizationEndpoint'),
       token: config.get('strava.tokenEndpoint'),
       scope: ['openid', 'offline_access', config.get('strava.clientId')],
-      profile: function (credentials, _params, _get) {
+      profile: function (credentials: any, _params: any, _get: any) {
         const payload = Jwt.token.decode(credentials.token).decoded.payload
 
         credentials.profile = {
@@ -35,7 +36,7 @@ function getBellOptions () {
     clientSecret: config.get('strava.clientSecret'),
     password: config.get('cookie.password'),
     isSecure: config.get('isProd'),
-    location: function (request) {
+    location: function (request: Request) {
       if (request.query.redirect) {
         const safeRedirect = getSafeRedirect(request.query.redirect)
         request.yar.set('redirect', safeRedirect)
@@ -43,7 +44,7 @@ function getBellOptions () {
 
       return config.get('strava.redirectUrl')
     },
-    providerParams: function (_request) {
+    providerParams: function (_request: Request) {
       const params = {
         response_mode: 'query'
       }
@@ -61,10 +62,10 @@ function getCookieOptions () {
       isSecure: config.get('isProd'),
       isSameSite: 'Lax'
     },
-    redirectTo: function (request) {
+    redirectTo: function (request: Request) {
       return `/auth/sign-in?redirect=${request.url.pathname}${request.url.search}`
     },
-    validate: async function (request, session) {
+    validate: async function (request: Request, session: any) {
       const userSession = await request.server.app.cache.get(session.sessionId)
 
       if (!userSession) {
@@ -89,5 +90,7 @@ function getCookieOptions () {
     }
   }
 }
+
+export default plugin
 
 export { getBellOptions, getCookieOptions }
