@@ -3,3 +3,11 @@ services:
     build: .
     image: heatmap
     container_name: heatmap
+    environment:
+      STRAVA_REDIRECT_URL: http://localhost:3000/auth/sign-in-oidc
+      STRAVA_SIGN_OUT_REDIRECT_URL: http://localhost:3000/auth/sign-out-oidc
+      REDIS_HOST: redis
+      COOKIE_PASSWORD: this-is-a-secret-that-must-be-at-least-32-characters
+
+  redis:
+    image: redis

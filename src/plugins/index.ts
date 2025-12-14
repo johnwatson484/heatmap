@@ -9,6 +9,7 @@ import errors from './errors.js'
 import views from './views.js'
 import router from './router.js'
 import userAgentProtection from './user-agent-protection.js'
+import session from './session.js'
 import config from '../config.js'
 
 async function registerPlugins (server: Server): Promise<void> {
@@ -22,6 +23,7 @@ async function registerPlugins (server: Server): Promise<void> {
     headers,
     views,
     router,
+    session,
     userAgentProtection,
   ]
 

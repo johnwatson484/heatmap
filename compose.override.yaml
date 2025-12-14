@@ -12,8 +12,26 @@ services:
       - ./package.json:/home/node/package.json
     networks:
       - heatmap
+    environment:
+      STRAVA_CLIENT_ID: ${STRAVA_CLIENT_ID}
+      STRAVA_CLIENT_SECRET: ${STRAVA_CLIENT_SECRET}
+    depends_on:
+      redis:
+        condition: service_started
+
+  redis:
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --dir /data --save 5 1
+    networks:
+      - heatmap
 
 networks:
   heatmap:
     driver: bridge
     name: heatmap
+
+volumes:
+  redis_data:
