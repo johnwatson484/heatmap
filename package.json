@@ -1,0 +1,68 @@
+{
+  "name": "hapi-template-ts",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "pretest": "npm run test:lint",
+    "test": "vitest run --coverage",
+    "test:watch": "vitest",
+    "test:lint": "eslint",
+    "test:debug": "vitest --inspect-brk",
+    "start:watch": "npm-run-all --parallel build:watch start:nodemon",
+    "start:nodemon": "nodemon --inspect=0.0.0.0 --ext ts,css,njk --watch src --ignore dist --delay 1000ms --legacy-watch dist/index.js",
+    "start:debug": "nodemon --inspect-brk=0.0.0.0 --ext ts,css,njk --watch src --ignore dist --delay 1000ms --legacy-watch dist/index.js",
+    "build": "tsc",
+    "build:watch": "tsc --watch --sourceMap",
+    "build:start": "npm run build && node dist/index.js",
+    "docker:test": "mkdir -p test-output 2>/dev/null || true && docker compose -p hapi-template-ts-test down -v && docker compose -f compose.yaml -f compose.test.yaml -p hapi-template-ts-test run --build --rm hapi-template-ts",
+    "docker:test:watch": "docker compose -p hapi-template-ts-test down -v && docker compose -f compose.yaml -f compose.test.yaml -f compose.test.watch.yaml -p hapi-template-ts-test run --build --rm hapi-template-ts"
+  },
+  "author": "John Watson",
+  "license": "MIT",
+  "type": "module",
+  "dependencies": {
+    "@hapi/boom": "10.0.1",
+    "@hapi/crumb": "9.0.1",
+    "@hapi/hapi": "21.3.10",
+    "@hapi/inert": "7.1.0",
+    "@hapi/scooter": "7.0.0",
+    "@hapi/vision": "7.0.3",
+    "blankie": "5.0.0",
+    "convict": "6.2.4",
+    "convict-format-with-validator": "6.2.0",
+    "hapi-pino": "12.1.0",
+    "joi": "17.13.3",
+    "log-timestamp": "0.3.0",
+    "nunjucks": "3.2.4",
+    "typescript": "5.6.2"
+  },
+  "devDependencies": {
+    "@types/convict": "6.1.6",
+    "@types/convict-format-with-validator": "6.0.5",
+    "@types/hapi__boom": "7.4.1",
+    "@types/hapi__crumb": "7.3.7",
+    "@types/hapi__hapi": "20.0.13",
+    "@types/hapi__inert": "5.2.10",
+    "@types/hapi__vision": "5.5.8",
+    "@types/hapi-pino": "9.1.2",
+    "@types/joi": "17.2.2",
+    "@types/node": "22.13.10",
+    "@types/nunjucks": "3.2.6",
+    "blipp": "4.0.2",
+    "eslint": "9.39.1",
+    "neostandard": "0.11.4",
+    "nodemon": "3.1.4",
+    "npm-run-all": "4.1.5",
+    "vitest": "4.0.15",
+    "@vitest/coverage-v8": "4.0.15"
+  },
+  "overrides": {
+    "tmp": "0.2.5"
+  },
+  "nodemonConfig": {
+    "ignore": [
+      "**/test-output/**"
+    ]
+  }
+}
