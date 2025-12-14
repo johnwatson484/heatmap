@@ -53,6 +53,7 @@ const plugin: ServerRegisterPluginObject<any> = {
       context.assetPath = '/assets'
       context.appName = config.get('appName')
 
+      console.log(request.auth)
       if (!request.auth.isAuthenticated || !request.auth.credentials?.sessionId) {
         return context
       }

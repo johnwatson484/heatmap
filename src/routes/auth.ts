@@ -1,5 +1,7 @@
 import { Request, ResponseObject, ResponseToolkit, ServerRoute } from '@hapi/hapi'
+import { randomUUID } from 'crypto'
 import { getSafeRedirect } from '../utils/get-safe-redirect.js'
+import session from '../plugins/session.js'
 
 const routes: ServerRoute[] = [{
   method: 'GET',
@@ -21,13 +23,15 @@ const routes: ServerRoute[] = [{
       return h.view('unauthorised')
     }
 
-    const { profile, token, refreshToken } = request.auth.credentials as any
+    const { profile, token, refreshToken, expiresIn } = request.auth.credentials as any
 
     await request.server.app.cache.set(profile.sessionId, {
+      sessionId: profile.sessionId,
       isAuthenticated: true,
       ...profile,
       token,
-      refreshToken
+      refreshToken,
+      expiresAt: Date.now() + (expiresIn * 1000)
     })
 
     request.cookieAuth.set({ sessionId: profile.sessionId })

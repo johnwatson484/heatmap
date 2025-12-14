@@ -1,5 +1,16 @@
 {% extends '_layout.njk' %}
 
 {% block content %}
-  <p>{{auth}}</p>
+  <section class="hero">
+    <div class="hero-body">
+      <p class="title">Hello world!</p>
+      <p class="subtitle">Welcome to {{ appName }}</p>
+    </div>
+  </section>
+  {% for key, value in auth %}
+    <div>
+      <dt>{{ key }}</dt>
+      <dd>{{ value }}</dd>
+    </div>
+  {% endfor %}
 {% endblock %}

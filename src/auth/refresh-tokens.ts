@@ -6,7 +6,7 @@ async function refreshTokens (refreshToken: string): Promise<any> {
     `client_id=${config.get('strava.clientId')}`,
     `client_secret=${config.get('strava.clientSecret')}`,
     'grant_type=refresh_token',
-    `scope=openid offline_access ${config.get('strava.clientId')}`,
+    'scope=read',
     `refresh_token=${refreshToken}`,
     `redirect_uri=${config.get('strava.redirectUrl')}`
   ].join('&')

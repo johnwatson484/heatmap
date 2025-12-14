@@ -3,7 +3,7 @@ import { ServerRoute, Request, ResponseToolkit, ResponseObject } from '@hapi/hap
 const routes: ServerRoute[] = [{
   method: 'GET',
   path: '/',
-  handler: (request: Request, h: ResponseToolkit): ResponseObject => {
+  handler: (_request: Request, h: ResponseToolkit): ResponseObject => {
     return h.redirect('/heatmap')
   },
 }, {

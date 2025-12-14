@@ -1,5 +1,5 @@
+import { randomUUID } from 'node:crypto'
 import { Request, ServerRegisterPluginObject } from '@hapi/hapi'
-import Jwt from '@hapi/jwt'
 import { refreshTokens } from '../auth/refresh-tokens.js'
 import { getSafeRedirect } from '../utils/get-safe-redirect.js'
 import config from '../config.js'
@@ -23,12 +23,16 @@ function getBellOptions () {
       useParamsAuth: true,
       auth: config.get('strava.authorizationEndpoint'),
       token: config.get('strava.tokenEndpoint'),
-      scope: ['openid', 'offline_access', config.get('strava.clientId')],
-      profile: function (credentials: any, _params: any, _get: any) {
-        const payload = Jwt.token.decode(credentials.token).decoded.payload
+      scope: ['read'],
+      profile: async function (credentials: any, _params: any, get: any) {
+        const profile = await get('https://www.strava.com/api/v3/athlete')
 
         credentials.profile = {
-          ...payload,
+          sessionId: randomUUID(),
+          id: profile.id,
+          username: profile.username,
+          firstname: profile.firstname,
+          lastname: profile.lastname
         }
       }
     },
@@ -72,17 +76,17 @@ function getCookieOptions () {
         return { isValid: false }
       }
 
-      try {
-        const decoded = Jwt.token.decode(userSession.token)
-        // Allow 60 second tolerance for clock skew between servers
-        Jwt.token.verifyTime(decoded, { timeSkewSec: 60 })
-      } catch {
+      // Check if token has expired (with 60 second buffer)
+      const isExpired = userSession.expiresAt && (Date.now() + 60000) >= userSession.expiresAt
+
+      if (isExpired) {
         if (!config.get('strava.refreshTokens')) {
           return { isValid: false }
         }
-        const { access_token: token, refresh_token: refreshToken } = await refreshTokens(userSession.refreshToken)
+        const { access_token: token, refresh_token: refreshToken, expires_in: expiresIn } = await refreshTokens(userSession.refreshToken)
         userSession.token = token
         userSession.refreshToken = refreshToken
+        userSession.expiresAt = Date.now() + (expiresIn * 1000)
         await request.server.app.cache.set(session.sessionId, userSession)
       }
 

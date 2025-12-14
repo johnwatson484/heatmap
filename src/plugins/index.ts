@@ -1,7 +1,10 @@
 import { Server, ServerRegisterPluginObject } from '@hapi/hapi'
+import Bell from '@hapi/bell'
+import Cookie from '@hapi/cookie'
 import Inert from '@hapi/inert'
 import Crumb from '@hapi/crumb'
 import Scooter from '@hapi/scooter'
+import auth from './auth.js'
 import csp from './content-security-policy.js'
 import headers from './headers.js'
 import logging from './logging.js'
@@ -17,6 +20,9 @@ async function registerPlugins (server: Server): Promise<void> {
     Inert,
     Crumb,
     Scooter,
+    Bell,
+    Cookie,
+    auth,
     csp,
     logging,
     errors,
