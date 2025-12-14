@@ -52,17 +52,23 @@ const config = convict({
       default: null,
       env: 'STRAVA_CLIENT_SECRET'
     },
+    tokenEndpoint: {
+      doc: 'The Strava token endpoint.',
+      format: String,
+      default: 'https://www.strava.com/oauth/token',
+      env: 'STRAVA_TOKEN_ENDPOINT'
+    },
+    authorizationEndpoint: {
+      doc: 'The Strava authorization endpoint.',
+      format: String,
+      default: 'https://www.strava.com/oauth/authorize',
+      env: 'STRAVA_AUTHORIZATION_ENDPOINT'
+    },
     redirectUrl: {
       doc: 'The Strava redirect URl.',
       format: String,
       default: null,
       env: 'STRAVA_REDIRECT_URL'
-    },
-    signOutRedirectUrl: {
-      doc: 'The Strava sign out redirect URl.',
-      format: String,
-      default: null,
-      env: 'STRAVA_SIGN_OUT_REDIRECT_URL'
     },
     refreshTokens: {
       doc: 'True if Strava refresh tokens are enabled.',

@@ -1,6 +1,6 @@
 function getSafeRedirect (redirect: string): string {
   if (!redirect?.startsWith('/')) {
-    return '/home'
+    return '/heatmap'
   }
   return redirect
 }

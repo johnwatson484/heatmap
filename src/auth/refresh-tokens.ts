@@ -1,7 +1,7 @@
 import Wreck from '@hapi/wreck'
 import config from '../config.js'
 
-async function refreshTokens (refreshToken) {
+async function refreshTokens (refreshToken: string): Promise<any> {
   const query = [
     `client_id=${config.get('strava.clientId')}`,
     `client_secret=${config.get('strava.clientSecret')}`,
@@ -11,7 +11,7 @@ async function refreshTokens (refreshToken) {
     `redirect_uri=${config.get('strava.redirectUrl')}`
   ].join('&')
 
-  const { payload } = await Wreck.post(`${config.get('strava.token_endpoint')}?${query}`, {
+  const { payload } = await Wreck.post(`${config.get('strava.tokenEndpoint')}?${query}`, {
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded'
     },

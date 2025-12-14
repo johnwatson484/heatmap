@@ -3,21 +3,14 @@ import { ServerRoute, Request, ResponseToolkit, ResponseObject } from '@hapi/hap
 const routes: ServerRoute[] = [{
   method: 'GET',
   path: '/',
-  options: {
-    auth: { mode: 'try' }
-  },
   handler: (request: Request, h: ResponseToolkit): ResponseObject => {
-    if (request.auth.isAuthenticated) {
-      return h.redirect('/home')
-    }
-
-    return h.view('index')
+    return h.redirect('/heatmap')
   },
 }, {
   method: 'GET',
-  path: '/home',
+  path: '/heatmap',
   handler: (_request: Request, h: ResponseToolkit): ResponseObject => {
-    return h.view('home')
+    return h.view('heatmap')
   },
 }]
 

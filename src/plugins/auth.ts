@@ -20,8 +20,8 @@ function getBellOptions () {
       name: 'strava',
       protocol: 'oauth2',
       useParamsAuth: true,
-      auth: config.get('strava.authorization_endpoint'),
-      token: config.get('strava.token_endpoint'),
+      auth: config.get('strava.authorizationEndpoint'),
+      token: config.get('strava.tokenEndpoint'),
       scope: ['openid', 'offline_access', config.get('strava.clientId')],
       profile: function (credentials, _params, _get) {
         const payload = Jwt.token.decode(credentials.token).decoded.payload
