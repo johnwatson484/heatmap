@@ -1,6 +1,6 @@
 import { Server } from '@hapi/hapi'
 import Joi from 'joi'
-import {Engine as CatboxRedis} from '@hapi/catbox-redis'
+import { Engine as CatboxRedis } from '@hapi/catbox-redis'
 import { registerPlugins } from './plugins/index.js'
 import config from './config.js'
 
